@@ -24,11 +24,6 @@ const image = new Image();
 
 image.src = images[currentImageIndex];
 
-// image.onload = () => {
-//   canvas.width = 600;
-//   canvas.height = 600;
-//   drawPlaceholder();
-// };
 
 startBtn.addEventListener("click", () => {
   const difficulty = parseInt(difficultySelect.value);
@@ -85,7 +80,7 @@ function drawPlaceholder() {
   ctx.fillStyle = "#333";
   ctx.font = "30px Arial";
   ctx.textAlign = "center";
-  ctx.fillText("Загрузите картинку, чтобы начать игру", canvas.width / 2, canvas.height / 2);
+  ctx.fillText("Загрузите картинку, чтобы начать игру", canvas.width / 2, canvas.height);
 }
 
 function drawPieces() {
