@@ -25,8 +25,8 @@ const image = new Image();
 image.src = images[currentImageIndex];
 
 image.onload = () => {
-  canvas.width = image.width;
-  canvas.height = image.height;
+  canvas.width = Math.min(window.innerWidth * 0.9, image.width);
+  canvas.height = canvas.width * (image.height / image.width);
   drawPlaceholder();
 };
 
@@ -67,6 +67,7 @@ function setupGame() {
   canvas.addEventListener("mousedown", startDrag);
   canvas.addEventListener("mousemove", dragPiece);
   canvas.addEventListener("mouseup", dropPiece);
+
   canvas.addEventListener("touchstart", startDrag, { passive: false });
   canvas.addEventListener("touchmove", dragPiece, { passive: false });
   canvas.addEventListener("touchend", dropPiece);
@@ -77,7 +78,7 @@ function setupGame() {
 function drawPlaceholder() {
   ctx.fillStyle = "#ddd";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "#555";
+  ctx.fillStyle = "#333";
   ctx.font = "30px Arial";
   ctx.textAlign = "center";
 }
@@ -85,8 +86,8 @@ function drawPlaceholder() {
 function drawPieces() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   pieces.forEach(piece => {
-    ctx.strokeStyle = highlightedPiece === piece ? "#FF5733" : "#333";
-    ctx.lineWidth = 3;
+    ctx.strokeStyle = highlightedPiece === piece ? "#ff0000" : "#000000";
+    ctx.lineWidth = 2;
     ctx.strokeRect(piece.currentX, piece.currentY, pieceWidth, pieceHeight);
     ctx.drawImage(
       image,
@@ -163,7 +164,7 @@ function checkWin() {
 function getMousePosition(e) {
   const rect = canvas.getBoundingClientRect();
   const touch = e.touches ? e.touches[0] : null;
-  const x = touch ? touch.clientX - rect.left : e.offsetX;
-  const y = touch ? touch.clientY - rect.top : e.offsetY;
+  const x = touch ? touch.clientX - rect.left : e.clientX - rect.left;
+  const y = touch ? touch.clientY - rect.top : e.clientY - rect.top;
   return { offsetX: x, offsetY: y };
 }
