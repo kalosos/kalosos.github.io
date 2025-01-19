@@ -4,16 +4,16 @@ const startBtn = document.getElementById("startBtn");
 const difficultySelect = document.getElementById("difficulty");
 const imageSelect = document.getElementById("imageSelect");
 
-let ROWS = 4, COLS = 4; // Default difficulty
+let ROWS = 4, COLS = 4;
 let pieces = [];
 let pieceWidth, pieceHeight;
 let draggingPiece = null;
 let offsetX, offsetY;
-let snapTolerance = 10; // Tolerance for snapping the pieces
-let highlightedPiece = null; // Track the highlighted piece during drag
+let snapTolerance = 10;
+let highlightedPiece = null;
 
 const images = [
-  "image1.jpg", // Замените на URL ваших картинок
+  "image1.jpg",
   "image2.jpg",
   "image3.jpg",
   "image4.jpg",
@@ -46,13 +46,10 @@ function setupGame() {
   pieceWidth = canvas.width / COLS;
   pieceHeight = canvas.height / ROWS;
 
-  // Randomly position the pieces within the canvas bounds
   for (let row = 0; row < ROWS; row++) {
     for (let col = 0; col < COLS; col++) {
       const correctX = col * pieceWidth;
       const correctY = row * pieceHeight;
-
-      // Randomly place pieces within the canvas bounds, but not outside
       const currentX = Math.random() * (canvas.width - pieceWidth);
       const currentY = Math.random() * (canvas.height - pieceHeight);
 
@@ -70,8 +67,6 @@ function setupGame() {
   canvas.addEventListener("mousedown", startDrag);
   canvas.addEventListener("mousemove", dragPiece);
   canvas.addEventListener("mouseup", dropPiece);
-
-  // Add touch event listeners for mobile support
   canvas.addEventListener("touchstart", startDrag, { passive: false });
   canvas.addEventListener("touchmove", dragPiece, { passive: false });
   canvas.addEventListener("touchend", dropPiece);
@@ -82,7 +77,7 @@ function setupGame() {
 function drawPlaceholder() {
   ctx.fillStyle = "#ddd";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "#333";
+  ctx.fillStyle = "#555";
   ctx.font = "30px Arial";
   ctx.textAlign = "center";
 }
@@ -90,9 +85,8 @@ function drawPlaceholder() {
 function drawPieces() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   pieces.forEach(piece => {
-    // Draw piece with a highlighted border when it's being dragged
-    ctx.strokeStyle = highlightedPiece === piece ? "#ff0000" : "#000000";
-    ctx.lineWidth = 2;
+    ctx.strokeStyle = highlightedPiece === piece ? "#FF5733" : "#333";
+    ctx.lineWidth = 3;
     ctx.strokeRect(piece.currentX, piece.currentY, pieceWidth, pieceHeight);
     ctx.drawImage(
       image,
@@ -124,7 +118,7 @@ function startDrag(e) {
     offsetY = mouseY - draggingPiece.currentY;
   }
 
-  e.preventDefault(); // Prevent default touch behavior
+  e.preventDefault();
 }
 
 function dragPiece(e) {
@@ -135,16 +129,14 @@ function dragPiece(e) {
     drawPieces();
   }
 
-  e.preventDefault(); // Prevent default touch behavior
+  e.preventDefault();
 }
 
 function dropPiece() {
   if (draggingPiece) {
-    // Snap the piece to its closest grid location
     const snapX = Math.round(draggingPiece.currentX / pieceWidth) * pieceWidth;
     const snapY = Math.round(draggingPiece.currentY / pieceHeight) * pieceHeight;
 
-    // Apply snap tolerance
     if (Math.abs(draggingPiece.currentX - snapX) < snapTolerance &&
         Math.abs(draggingPiece.currentY - snapY) < snapTolerance) {
       draggingPiece.currentX = snapX;
