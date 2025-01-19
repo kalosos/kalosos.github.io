@@ -4,7 +4,7 @@ const startBtn = document.getElementById("startBtn");
 const difficultySelect = document.getElementById("difficulty");
 const imageSelect = document.getElementById("imageSelect");
 
-let ROWS = 3, COLS = 3; // Default difficulty
+let ROWS = 4, COLS = 4; // Default difficulty
 let pieces = [];
 let pieceWidth, pieceHeight;
 let draggingPiece = null;
