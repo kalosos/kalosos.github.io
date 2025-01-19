@@ -27,6 +27,7 @@ image.src = images[currentImageIndex];
 image.onload = () => {
   canvas.width = 600;
   canvas.height = 600;
+  ctx.drawImage(image, 0, 0, canvas.width, canvas.height); // Stretch the image to fill the canvas
   drawPlaceholder();
 };
 
@@ -71,6 +72,11 @@ function setupGame() {
   canvas.addEventListener("mousemove", dragPiece);
   canvas.addEventListener("mouseup", dropPiece);
 
+  // Add touch event listeners for mobile support
+  canvas.addEventListener("touchstart", startDrag, { passive: false });
+  canvas.addEventListener("touchmove", dragPiece, { passive: false });
+  canvas.addEventListener("touchend", dropPiece);
+
   drawPieces();
 }
 
@@ -85,6 +91,7 @@ function drawPlaceholder() {
 
 function drawPieces() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(image, 0, 0, canvas.width, canvas.height); // Draw stretched image
   pieces.forEach(piece => {
     // Draw piece with a highlighted border when it's being dragged
     ctx.strokeStyle = highlightedPiece === piece ? "#ff0000" : "#000000";
@@ -105,8 +112,7 @@ function drawPieces() {
 }
 
 function startDrag(e) {
-  const mouseX = e.offsetX;
-  const mouseY = e.offsetY;
+  const { offsetX: mouseX, offsetY: mouseY } = getMousePosition(e);
 
   highlightedPiece = pieces.find(piece =>
     mouseX > piece.currentX &&
@@ -120,14 +126,19 @@ function startDrag(e) {
     offsetX = mouseX - draggingPiece.currentX;
     offsetY = mouseY - draggingPiece.currentY;
   }
+
+  e.preventDefault(); // Prevent default touch behavior
 }
 
 function dragPiece(e) {
   if (draggingPiece) {
-    draggingPiece.currentX = e.offsetX - offsetX;
-    draggingPiece.currentY = e.offsetY - offsetY;
+    const { offsetX: mouseX, offsetY: mouseY } = getMousePosition(e);
+    draggingPiece.currentX = mouseX - offsetX;
+    draggingPiece.currentY = mouseY - offsetY;
     drawPieces();
   }
+
+  e.preventDefault(); // Prevent default touch behavior
 }
 
 function dropPiece() {
@@ -158,4 +169,12 @@ function checkWin() {
   if (isWin) {
     alert("Поздравляем! Вы собрали пазл!");
   }
+}
+
+function getMousePosition(e) {
+  const rect = canvas.getBoundingClientRect();
+  const touch = e.touches ? e.touches[0] : null;
+  const x = touch ? touch.clientX - rect.left : e.offsetX;
+  const y = touch ? touch.clientY - rect.top : e.offsetY;
+  return { offsetX: x, offsetY: y };
 }
