@@ -27,7 +27,7 @@ image.src = images[currentImageIndex];
 image.onload = () => {
   canvas.width = 600;
   canvas.height = 600;
-  ctx.drawImage(image, 0, 0, canvas.width, canvas.height); // Stretch the image to fill the canvas
+  ctx.drawImage( 0, 0, canvas.width, canvas.height); // Stretch the image to fill the canvas
   drawPlaceholder();
 };
 
