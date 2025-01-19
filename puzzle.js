@@ -27,7 +27,6 @@ image.src = images[currentImageIndex];
 image.onload = () => {
   canvas.width = 600;
   canvas.height = 600;
-  ctx.drawImage( 0, 0, canvas.width, canvas.height); // Stretch the image to fill the canvas
   drawPlaceholder();
 };
 
@@ -91,7 +90,6 @@ function drawPlaceholder() {
 
 function drawPieces() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.drawImage(image, 0, 0, canvas.width, canvas.height); // Draw stretched image
   pieces.forEach(piece => {
     // Draw piece with a highlighted border when it's being dragged
     ctx.strokeStyle = highlightedPiece === piece ? "#ff0000" : "#000000";
