@@ -80,7 +80,7 @@ function drawPlaceholder() {
   ctx.fillStyle = "#333";
   ctx.font = "30px Arial";
   ctx.textAlign = "center";
-  ctx.fillText("Загрузите картинку, чтобы начать игру", canvas.width / 2, canvas.height);
+  ctx.fillText("Загрузите картинку, чтобы начать игру", canvas.width / 2, canvas.height / 2);
 }
 
 function drawPieces() {
